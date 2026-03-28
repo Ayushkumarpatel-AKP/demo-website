@@ -206,6 +206,62 @@
             background-clip: text;
         }
 
+        .device-circle-wrap {
+            position: relative;
+            width: 192px;
+            height: 192px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scan-ring {
+            position: absolute;
+            inset: 8px;
+            border-radius: 999px;
+            border: 2px solid rgba(56, 189, 248, 0.45);
+            box-shadow: 0 0 24px rgba(56, 189, 248, 0.3);
+            animation: scanSpin 5s linear infinite;
+        }
+
+        .scan-ring::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: #7dd3fc;
+            box-shadow: 0 0 14px rgba(125, 211, 252, 0.95);
+        }
+
+        .finding-label {
+            position: absolute;
+            bottom: 28px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #bae6fd;
+            text-transform: uppercase;
+            animation: textPulse 1.4s ease-in-out infinite;
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
+        }
+
+        .finding-dots::after {
+            content: '...';
+            display: inline-block;
+            width: 1.2em;
+            text-align: left;
+            animation: dotsStep 1.2s steps(4, end) infinite;
+            overflow: hidden;
+            vertical-align: bottom;
+        }
+
         .brand-chip {
             display: inline-flex;
             align-items: center;
@@ -280,6 +336,21 @@
         @keyframes shimmer {
             0% { background-position: -1000px 0; }
             100% { background-position: 1000px 0; }
+        }
+
+        @keyframes scanSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.75; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes dotsStep {
+            0% { width: 0; }
+            100% { width: 1.2em; }
         }
 
         .shimmer {
@@ -503,7 +574,9 @@
 
                                 <div className="flex flex-col items-center justify-center">
                                     <div className="mb-6">
-                                        <svg className="w-48 h-48 opacity-80" viewBox="0 0 200 200" fill="none">
+                                        <div className="device-circle-wrap">
+                                            <div className="scan-ring"></div>
+                                            <svg className="w-48 h-48 opacity-80" viewBox="0 0 200 200" fill="none">
                                             <defs>
                                                 <linearGradient id="micGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                                                     <stop offset="0%" style={{ stopColor: '#3b82f6', stopOpacity: 0.8 }} />
@@ -514,7 +587,11 @@
                                             <path d="M 100 60 L 100 75 M 100 125 L 100 140 M 60 100 L 75 100 M 125 100 L 140 100" stroke="#3b82f6" strokeWidth="3" opacity="0.6" />
                                             <circle cx="100" cy="100" r="60" fill="none" stroke="#3b82f6" strokeWidth="1" opacity="0.3" />
                                             <circle cx="100" cy="100" r="75" fill="none" stroke="#3b82f6" strokeWidth="1" opacity="0.2" />
-                                        </svg>
+                                            </svg>
+                                            <div className="finding-label">
+                                                Finding Device<span className="finding-dots"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                     
                                     {isRecording && (
